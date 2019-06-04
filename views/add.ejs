@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title> Add Student</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME ICONS  -->
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="css/style.css" rel="stylesheet" />
+    <style type = "text/css">
+        .alert{
+            padding: 0 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Student Management System</h2>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- HEADER END-->
+    <!-- LOGO HEADER END-->
+    <section class="menu-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"> 
+                    <div class="navbar-collapse collapse ">
+                        <ul id="menu-top" class="nav navbar-nav navbar-right">
+                            <li><a  href="/">All Students</a></li>
+                            <li><a class="menu-top-active" href="/add">Add Students</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">Add Students</h1>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Sid:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "sid">
+                    </p>
+                    <div class="alert alert-danger" role="alert" id = "sidtip" style = "display: none">Student number already exsist</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Name:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "name">
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Age:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "age">
+                    </p>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Sex:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <lable><input type = "radio" value = "Male" name = "sex">  Male</lable>
+                        <label><input type = "radio" value = "Female" name = "sex">  Female</lable>
+                    </p>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-md-1 text-right">
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <button class = "btn btn-success" id = "btn">Submit</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type = "text/javascript" src = "/js/jquery.min.js"></script>
+    <script type = "text/javascript">
+        //点击提交按钮时做的事情
+        $("#btn").click(function(){
+            $.post("/student",{
+                sid: parseInt($("input[name=sid]").val()),
+                name: $("input[name=name]").val(),
+                age: parseInt($("input[name=age]").val()),
+                sex: $("input[name=sex]:checked").val()
+            },function(data){
+                if(data.result == 1){
+                    alert("Submit success!");
+                    $("input[type=text]").val("");
+                }else if(data.result == -1){
+                    alert("Submit fail, id may already exist");
+                }else if(data.result == -2){
+                    alert("Server error!");
+                }
+            });
+        });
+
+        $("input[name=sid]").blur(function(){
+            var sid = parseInt($("input[name=sid]").val());
+            if(isNaN(sid) || !sid || !(sid > 10000 && sid <= 999999)){
+                $("#sidtip").html("Please input right student id, should be at least 6 bits, not exceed 7 bits.").show();
+                return;
+            }
+            $.ajax({
+                type: "propfind",
+                url: "/student/" + $("input[name=sid]").val(),
+                success: function(data){
+                    if(!data.result){
+                        $("#sidtip").html("sid is already exist").show();
+                    }
+                }
+            });
+        });
+
+        //得到焦点的时候
+        $("input[name=sid]").focus(function(){
+           $("#sidtip").hide();
+        });
+    </script>
+    <!-- CONTENT-WRAPPER SECTION END-->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    &copy; 2015 YourCompany | By : <a href="http://www.designbootstrap.com/" target="_blank">DesignBootstrap</a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER SECTION END-->
+
+
+<!-- GOOGLE ADD SECTION START -->
+    <div id="add-div-main">
+        <div class="add-wrapper-db">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="add-block">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 text-center">
+                        <div class="add-block" id="ftr-large-add"  >
+<center> 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- db-footer-one-728-90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-2936243881134126"
+     data-ad-slot="5253257896"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- GOOGLE ADD SECTION END -->
+
+</body>
+</html>

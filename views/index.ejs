@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Student Management System</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME ICONS  -->
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="css/style.css" rel="stylesheet" />
+    <script type = "text/javascript" src = "/js/jquery.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Student Management System</h2>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- HEADER END-->
+    <!-- LOGO HEADER END-->
+    <section class="menu-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="navbar-collapse collapse ">
+                        <ul id="menu-top" class="nav navbar-nav navbar-right">
+                            <li><a class="menu-top-active" href="/">All Students</a></li>
+                            <li><a class="" href="/add">Add Students</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">All Students List</h1>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                     <!--   Basic Table  -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Basic Table
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sid</th>
+                                            <th>Name</th>
+                                            <th>Sex</th>
+                                            <th>Age</th>
+                                            <th>Opearation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id = "tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- End  Basic Table  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type = "text/javascript">
+        //事件委托，事件委托是制作动态事件绑定最简单的方法
+        //删除按钮
+        $("#tbody").delegate(".delbtn","click",function(){
+            if(!confirm("You really want to delete this?")){
+                return;
+            }
+            var sid = $(this).attr("data-sid");
+            var $this = $(this);
+            //除了get和post，其余的type都用ajax
+            $.ajax({
+                url : "/student/" + sid,
+                type:"delete",
+                success: function(data){
+                    if(data.result == 1){
+                        alert("Delete success");
+                        $this.parents("tr").remove();
+                    }else{
+                        alert("Delete fail");
+                    }
+                }
+            });
+        });  
+        //修改按钮  
+        $("#tbody").delegate(".modbtn","click",function(){
+            var sid = $(this).attr("data-sid");
+            window.location = "/student/" + sid;
+        });
+        //Ajax请求，请求JSON数据
+        $.get("/student",function(data){
+            $.each(data.results,function(item,a){
+                //创建一个tr
+                $tr = $("<tr></tr>");
+                $("<td></td>").html(a.sid).appendTo($tr);
+                $("<td></td>").html(a.name).appendTo($tr);
+                $("<td></td>").html(a.sex).appendTo($tr);
+                $("<td></td>").html(a.age).appendTo($tr);
+                $("<td><input type = 'btn' class = 'btn btn-danger delbtn' value = 'delete' data-sid ='"+ a.sid +"'/><input type = 'btn' class = 'btn btn-warning modbtn' value = 'modify' data-sid ='"+ a.sid +"'/></td>").appendTo($tr);
+                //上树
+                $tr.appendTo($("#tbody"));
+            });
+        });
+    </script>
+
+
+<!-- GOOGLE ADD SECTION START -->
+    <div id="add-div-main">
+        <link href="http://designbootstrap.com/track/add-style.css" rel="stylesheet" />
+        <div class="add-wrapper-db">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="add-block">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 text-center">
+                        <div class="add-block" id="ftr-large-add"  >
+<center> 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- db-footer-one-728-90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-2936243881134126"
+     data-ad-slot="5253257896"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

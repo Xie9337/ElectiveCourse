@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title> Add Student</title>
+    <!-- 此处要看路由路径，因此要加../  -->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME ICONS  -->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="/css/style.css" rel="stylesheet" /> 
+    <style type = "text/css">
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Student Management System</h2>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- HEADER END-->
+    <!-- LOGO HEADER END-->
+    <section class="menu-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"> 
+                    <div class="navbar-collapse collapse ">
+                        <ul id="menu-top" class="nav navbar-nav navbar-right">
+                            <li><a  href="/">All Students</a></li>
+                            <li><a  href="/add">Add Students</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">Update Students</h1>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Sid:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "sid" value="<%= info.sid %>" disabled>
+                    </p>
+                    <div class="alert alert-danger" role="alert" id = "sidtip" style = "display: none">Student number already exsist</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Name:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "name" value="<%= info.name %>">
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Age:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <input type = "text" class = "form-control" name = "age" value="<%= info.age %>">
+                    </p>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-md-1">
+                    <p>
+                        Sex:
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <lable><input type = "radio" value = "Male" name = "sex" <% if(info.sex=='Male') {%> checked <% } %> >  Male</lable>
+                        <label><input type = "radio" value = "Female" name = "sex" <% if(info.sex=='Female') {%> checked <% } %> >   Female</lable>
+                    </p>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-md-1 text-right">
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <button class = "btn btn-success" id = "btn">Submit</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type = "text/javascript" src = "/js/jquery.min.js"></script>
+    <script type = "text/javascript">
+        //点击提交按钮时做的事情
+        $("#btn").click(function(){
+            var sid = parseInt($("input[name=sid]").val());
+            $.post("/student/" + sid,{
+                name: $("input[name=name]").val(),
+                age: parseInt($("input[name=age]").val()),
+                sex: $("input[name=sex]:checked").val()
+            },function(data){
+                if(data.result == 1){
+                    alert("Update success!");
+                    window.location = "/";
+                }else{
+                    alert("Update fail!");
+                }
+            });
+        });
+    </script>
+    <!-- CONTENT-WRAPPER SECTION END-->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    &copy; 2015 YourCompany | By : <a href="http://www.designbootstrap.com/" target="_blank">DesignBootstrap</a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER SECTION END-->
+
+</body>
+</html>
